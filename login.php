@@ -1,3 +1,59 @@
+<?php
+session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if (isset($_POST['login'])) {
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Prepared statement (SECURE)
+    $stmt = $conn->prepare("SELECT * FROM registration WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+
+    $user = $result->fetch_assoc();
+
+    if ($password === $user['password']) {
+
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_name'] = $user['fullname'];
+        $_SESSION['user_phone'] = $user['phone'];
+
+        if ($user['role'] === 'admin') {
+            header("Location: admin/dashboard.php");
+            exit();
+        } elseif ($user['role'] === 'patient') {
+            header("Location: patient/dashboard.php");
+            exit();
+        } elseif ($user['role'] === 'doctor') {
+            header("Location: doctor/dashboard.php");
+            exit();
+        }
+
+    } else {
+        $error = "Incorrect password";
+    }
+
+} else {
+    $error = "User not found";
+}}
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -56,14 +112,14 @@
                     <strong>Pharmacy</strong>
                 </div>
             </div>
-            <form onsubmit="return handleLogin(event)">
+            <form method="post" >
                 <div class="form-group">
                     <label class="form-label">Email or ID</label>
-                    <input type="text" class="form-control" placeholder="Enter your email or ID" required>
+                    <input type="text" name="email" class="form-control" placeholder="Enter your email or ID" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter password" required>
+                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
                     <label style="display: flex; align-items: center; gap: 8px;">
@@ -71,7 +127,7 @@
                     </label>
                     <a href="#" style="color: var(--primary-color); font-size: 14px; font-weight: 600;">Forgot Password?</a>
                 </div>
-                <button type="submit" class="btn btn-primary w-full btn-lg">
+                <button type="submit" name="login" class="btn btn-primary w-full btn-lg">
                     <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
             </form>
@@ -81,18 +137,18 @@
         </div>
     </div>
     <script src="assets/js/main.js"></script>
-    <script>
+    <!-- <script>
         let selectedRole = 'patient';
         function selectRole(btn, role) {
             document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             selectedRole = role;
-        }
-        function handleLogin(e) {
-            e.preventDefault();
-            setTimeout(() => window.location.href = selectedRole + '/dashboard.php', 500);
-            return false;
-        }
-    </script>
+        } -->
+        <!-- // function handleLogin(e) {
+        //     e.preventDefault();
+        //     setTimeout(() => window.location.href = selectedRole + '/dashboard.php', 500);
+        //     return false;
+        // }
+    </script> -->
 </body>
 </html>
