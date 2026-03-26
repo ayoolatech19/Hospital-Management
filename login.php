@@ -14,44 +14,44 @@ if (!$conn) {
 
 if (isset($_POST['login'])) {
 
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    $mail   =  $_POST['email'];
+    $password =  $_POST['password'];
 
-    // Prepared statement (SECURE)
-    $stmt = $conn->prepare("SELECT * FROM registration WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
+    // Match phone AND password
+    $sql = "SELECT * FROM registration
+            WHERE email = '$mail' AND password = '$password' 
+            ";
 
-    $result = $stmt->get_result();
+    $result = mysqli_query($conn, $sql);
 
-if ($result->num_rows === 1) {
+    if (mysqli_num_rows($result) == 1) {
 
-    $user = $result->fetch_assoc();
+        $user = mysqli_fetch_assoc($result);
 
-    if ($password === $user['password']) {
-
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['user_name'] = $user['fullname'];
+        // Save session
+        $_SESSION['user_id']    = $user['id'];
+        $_SESSION['user_name']  = $user['firstname'];
         $_SESSION['user_phone'] = $user['phone'];
+        $_SESSION['user_role']  = $user['roles'];
 
-        if ($user['role'] === 'admin') {
-            header("Location: admin/dashboard.php");
-            exit();
-        } elseif ($user['role'] === 'patient') {
-            header("Location: patient/dashboard.php");
-            exit();
-        } elseif ($user['role'] === 'doctor') {
-            header("Location: doctor/dashboard.php");
-            exit();
-        }
-
+        // Redirect
+       if ($user['roles'] === 'admin') {
+                    header("Location: admin/dashboard.php");
+                    exit();
+                } elseif ($user['roles'] === 'patient') {
+                    header("Location: patient/dashboard.php");
+                    exit();
+                } elseif ($user['roles'] === 'doctor') {
+                    header("Location: doctor/dashboard.php");
+                    exit();
+                } elseif ($user['roles'] === 'pharmacy') {
+                    header("Location: pharmacy/dashboard.php");
+                    exit();
+                }
     } else {
-        $error = "Incorrect password";
+        $error = "Invalid phone number or password";
     }
-
-} else {
-    $error = "User not found";
-}}
+}
 ?>
 
 <!DOCTYPE html>
