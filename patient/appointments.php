@@ -55,6 +55,7 @@ $sql="SELECT * from appointment where username='$username'";
 
          <tbody>
 <?php
+
 if (mysqli_num_rows($run) > 0) {
 
     while ($row = mysqli_fetch_assoc($run)) {

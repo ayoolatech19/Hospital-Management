@@ -1,6 +1,20 @@
 <?php 
 $page_title = "Appointments";
 include '../includes/header-doctor.php'; 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+$sql = "SELECT * FROM appointment";
+$run = mysqli_query($conn, $sql);
 ?>
 
 <div class="card">
@@ -23,17 +37,25 @@ include '../includes/header-doctor.php';
             </thead>
 
             <tbody>
-                <tr>
-                    <td>09:00 AM</td>
-                    <td>John Doe (P-001)</td>
-                    <td>Check-up</td>
-                    <td>
-                        <span class="badge badge-success">Completed</span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary">View</button>
-                    </td>
-                </tr>
+                <?php
+                while ($row = mysqli_fetch_assoc($run)) {
+                ?>
+                    <tr>
+                        <td><?php echo $row['pft']; ?></td>
+                        <td><?php echo $row['username']; ?></td>
+                        <td><?php echo $row['reasons']; ?></td>
+                        <td>
+                            <span class="badge badge-<?php echo ($row['status'] == 'pending') ? 'success' : 'warning'; ?>">
+                                <?php echo $row['status']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">View</button>
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
             </tbody>
 
         </table>
