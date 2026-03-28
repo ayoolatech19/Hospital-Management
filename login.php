@@ -30,7 +30,7 @@ if (isset($_POST['login'])) {
 
         // Save session
         $_SESSION['user_id']    = $user['id'];
-        $_SESSION['user_name']  = $user['firstname'];
+        $_SESSION['fullname']  = $user['fullname'];
         $_SESSION['user_phone'] = $user['phone'];
         $_SESSION['user_role']  = $user['roles'];
 
