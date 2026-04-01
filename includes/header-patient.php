@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+
+         
+
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
@@ -191,14 +194,47 @@
                     
                     <!-- User Profile -->
                     <div class="user-profile">
-                        <div class="user-avatar">JD</div>
+                        <div class="user-avatar">
+ <?php
+session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+// Get user ID from session
+$user_id = $_SESSION['user_id'];
+
+// Fetch user data
+$sql = "SELECT * FROM registration WHERE id = '$user_id'";
+$run = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($run);
+
+// Get initials
+$fullname = $row['fullname'];
+$words = explode(" ", $fullname);
+
+$initials = "";
+foreach ($words as $word) {
+    if (!empty($word)) {
+        $initials .= strtoupper($word[0]);
+    }
+}
+
+echo $initials;
+?>
+                        </div>
                         <div class="user-info">
-                            <h4>John Doe</h4>
+                            <h4><?php echo $fullname ?></h4>
                             <p>Patient</p>
                         </div>
                     </div>
                 </div>
             </header>
+
             
             <!-- Content Area -->
             <div class="content-area">

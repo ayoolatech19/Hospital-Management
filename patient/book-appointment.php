@@ -34,6 +34,12 @@ if (isset($_POST['book'])) {
         echo "<script>alert('Booking Failed!');</script>";
     }
 }
+
+
+
+
+
+
 ?>
 
 <div class="card">
