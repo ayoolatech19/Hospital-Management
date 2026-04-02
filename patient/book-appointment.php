@@ -1,5 +1,5 @@
 <?php 
-session_start();
+// session_start();
 $page_title = "Book Appointment";
 include '../includes/header-patient.php'; 
 

@@ -1,5 +1,5 @@
 <?php 
-session_start();
+// session_start();
 $page_title = "My Appointments";
 include '../includes/header-patient.php'; 
 $servername = "localhost";

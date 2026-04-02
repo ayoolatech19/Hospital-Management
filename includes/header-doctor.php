@@ -1,3 +1,25 @@
+<?php
+session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM registration WHERE id = '$user_id' AND roles = 'doctor'";
+$run = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($run);
+
+$fullname = $row['fullname'];
+$initials = "";
+foreach (explode(" ", $fullname) as $word) {
+    if (!empty($word)) $initials .= strtoupper($word[0]);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -105,9 +127,10 @@
                         <button class="header-btn"><i class="fas fa-bell"></i><span class="badge">3</span></button>
                     </div>
                     <div class="user-profile">
-                        <div class="user-avatar">U</div>
+                        <div class="user-avatar">
+                        </div>
                         <div class="user-info">
-                            <h4>User Name</h4>
+                            <h4><?php echo $fullname ?></h4>
                             <p>Doctor</p>
                         </div>
                     </div>
