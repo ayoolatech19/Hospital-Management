@@ -9,7 +9,7 @@ $database = "hospital_management";
 $conn = mysqli_connect($servername, $username, $password, $database);
 
 $user_id = $_SESSION['user_id'];
-$sql = "SELECT fullname FROM registration WHERE id = '$user_id' AND roles = 'patient'";
+$sql = "SELECT * FROM registration WHERE id = '$user_id' AND roles = 'patient'";
 $run = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($run);
 

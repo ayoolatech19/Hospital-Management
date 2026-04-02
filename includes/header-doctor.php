@@ -128,6 +128,7 @@ foreach (explode(" ", $fullname) as $word) {
                     </div>
                     <div class="user-profile">
                         <div class="user-avatar">
+                               <?php echo $initials;?>
                         </div>
                         <div class="user-info">
                             <h4><?php echo $fullname ?></h4>

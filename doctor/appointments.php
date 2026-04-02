@@ -1,4 +1,5 @@
 <?php 
+// session_start();
 $page_title = "Appointments";
 include '../includes/header-doctor.php'; 
 
@@ -8,13 +9,32 @@ $password = "";
 $database = "hospital_management";
 
 $conn = mysqli_connect($servername, $username, $password, $database);
-
+ 
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM appointment";
+$docname=   $_SESSION['fullname'] ;
+
+$sql = "SELECT * FROM appointment where doctors='$docname'";
 $run = mysqli_query($conn, $sql);
+
+
+
+if (isset($_POST['accept'])) {
+    $id =  $_POST['appointment_id'];
+
+    $update = "UPDATE appointment SET status='accepted' WHERE id=$id";
+    mysqli_query($conn, $update);
+}
+
+if (isset($_POST['reject'])) {
+    $id =  $_POST['appointment_id'];
+
+    $update = "UPDATE appointment SET status='rejected' WHERE id=$id";
+    mysqli_query($conn, $update);
+}
+
 ?>
 
 <div class="card">
@@ -50,8 +70,22 @@ $run = mysqli_query($conn, $sql);
                             </span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-primary">View</button>
-                        </td>
+    <form method="POST" style="display:inline;">
+        <input type="hidden" name="appointment_id" value="<?php echo $row['id']; ?>">
+        <button type="submit" name="accept" 
+            style="padding:6px 12px; border:none; border-radius:6px; background:#22c55e; color:#fff; cursor:pointer; font-size:12px; margin-right:5px;">
+            Accept
+        </button>
+    </form>
+
+    <form method="POST" style="display:inline;">
+        <input type="hidden" name="appointment_id" value="<?php echo $row['id']; ?>">
+        <button type="submit" name="reject" 
+            style="padding:6px 12px; border:none; border-radius:6px; background:#ef4444; color:#fff; cursor:pointer; font-size:12px;">
+            Reject
+        </button>
+    </form>
+</td>
                     </tr>
                 <?php
                 }
