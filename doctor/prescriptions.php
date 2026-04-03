@@ -13,8 +13,11 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = "SELECT * FROM registration";
-$run = mysqli_query($conn, $sql);
+$doctorname=  $_SESSION['fullname'];
+
+$sql = "SELECT DISTINCT fullname 
+        FROM appointment 
+        WHERE doctors = '$doctorname'";
 
 
 if (isset($_POST['create'])) {
@@ -43,12 +46,12 @@ $duration  = $_POST['duration'];
 
         <div class="form-group">
             <label class="form-label">Patient</label>
-  <select class="form-control" name="patient_id">
+<select class="form-control" name="patient_id">
 <?php
 while ($row = mysqli_fetch_assoc($run)) {
-    echo "<option value='".$row['fullname']."'>"
-         .$row['fullname']." (".$row['reg_id'].")"
-         ."</option>";
+  echo "<option value='".$row['fullname']."'>"
+     .$row['fullname'].
+     "</option>";
 }
 ?>
 </select>
