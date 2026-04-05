@@ -15,9 +15,11 @@ if (!$conn) {
 
 $doctorname=  $_SESSION['fullname'];
 
-$sql = "SELECT DISTINCT fullname 
+$sql = "SELECT DISTINCT username 
         FROM appointment 
         WHERE doctors = '$doctorname'";
+
+$run = mysqli_query($conn, $sql);       
 
 
 if (isset($_POST['create'])) {
@@ -49,8 +51,8 @@ $duration  = $_POST['duration'];
 <select class="form-control" name="patient_id">
 <?php
 while ($row = mysqli_fetch_assoc($run)) {
-  echo "<option value='".$row['fullname']."'>"
-     .$row['fullname'].
+  echo "<option value='".$row['username']."'>"
+     .$row['username'].
      "</option>";
 }
 ?>
