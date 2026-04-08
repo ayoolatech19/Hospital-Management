@@ -1,6 +1,11 @@
 <?php 
 $page_title = "Dashboard";
 include '../includes/header-patient.php'; 
+
+
+
+
+
 ?>
 <div class="grid grid-4 mb-4">
     <div class="stat-card">

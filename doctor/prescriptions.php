@@ -13,8 +13,8 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$doctorname=  $_SESSION['fullname'];
-
+$doctorname =  $_SESSION['fullname'];
+// echo $doctorname;
 $sql = "SELECT DISTINCT username 
         FROM appointment 
         WHERE doctors = '$doctorname'";
@@ -29,11 +29,13 @@ $medname   = $_POST['medname'];
 $dosage    = $_POST['dosage'];
 $frequency = $_POST['frequency'];
 $duration  = $_POST['duration'];
+
+
     
 
 
-    $sqli = "INSERT INTO patient_pres (patient_info,medname,dosage,frequency,duration)
-            VALUES ('$patientid','$medname','$dosage','$frequency','$duration')";
+    $sqli = "INSERT INTO patient_pres (patient_info,medname,dosage,frequency,duration,doctor_name)
+            VALUES ('$patientid','$medname','$dosage','$frequency','$duration','$doctorname')";
 
     if (mysqli_query($conn, $sqli)) {
         echo "<script>alert('prescription done!');</script>";

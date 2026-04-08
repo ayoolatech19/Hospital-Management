@@ -14,9 +14,24 @@ $run = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($run);
 
 $fullname = $row['fullname'];
+$reg_id = $row['reg_id'];
 $initials = "";
 foreach (explode(" ", $fullname) as $word) {
     if (!empty($word)) $initials .= strtoupper($word[0]);
+
+//  $sqlw = "SELECT COUNT(pending) AS totalpending 
+//         FROM appointment 
+//         WHERE user_id = '$userid'";
+
+// $resultw = mysqli_query($conn, $sqlw);
+// $roww = mysqli_fetch_assoc($resultw);
+
+// $totalwithdraw = $roww['totalwithdraw'];
+
+
+
+
+
 }
 ?>
 <!DOCTYPE html>
@@ -56,11 +71,11 @@ foreach (explode(" ", $fullname) as $word) {
             <!-- User Info -->
             <div class="sidebar-user">
                 <div class="sidebar-user-avatar">
-                    JD
+                       <?php echo $initials; ?>
                 </div>
                 <div class="sidebar-user-info">
-                    <h4>John Doe</h4>
-                    <p>Patient ID: P-2024-001</p>
+                    <h4><?php echo $fullname; ?></h4>
+                    <p><?php echo $reg_id?></p>
                 </div>
             </div>
             
