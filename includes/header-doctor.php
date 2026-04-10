@@ -18,6 +18,21 @@ $initials = "";
 foreach (explode(" ", $fullname) as $word) {
     if (!empty($word)) $initials .= strtoupper($word[0]);
 }
+
+$docname=   $_SESSION['fullname'] ;
+
+$count = "SELECT doctors, COUNT(*) AS pending_count 
+          FROM appointment 
+          WHERE status = 'pending' 
+          AND doctors = '$docname'
+          GROUP BY doctors";
+
+$results = mysqli_query($conn, $count);
+$rows = mysqli_fetch_assoc($results);
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +79,7 @@ foreach (explode(" ", $fullname) as $word) {
                             <a href="appointments.php" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <span>Appointments</span>
-                                <span class="nav-badge warning">5</span>
+                                <span class="nav-badge warning"><?php echo $rows['pending_count']; ?></span>
                             </a>
                         </li>
                     </ul>

@@ -1,10 +1,24 @@
 <?php 
 $page_title = "My Patients";
 include '../includes/header-doctor.php'; 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
 
+$conn = mysqli_connect($servername, $username, $password, $database);
+ 
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
+$docname=   $_SESSION['fullname'] ;
 
+$sql = "SELECT DISTINCT * 
+        FROM appointment 
+        WHERE doctors = '$docname'";
 
+$run = mysqli_query($conn, $sql);  
 
 ?>
 
@@ -19,27 +33,42 @@ include '../includes/header-doctor.php';
                 <tr>
                     <th>Patient ID</th>
                     <th>Name</th>
-                    <th>Age</th>
                     <th>Last Visit</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
+<tbody>
+<?php
+if (mysqli_num_rows($run) > 0) {
 
-            <tbody>
-                <tr>
-                    <td>P-001</td>
-                    <td>John Doe</td>
-                    <td>34</td>
-                    <td>Feb 20, 2026</td>
-                    <td>
-                        <span class="badge badge-success">Active</span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary">View</button>
-                    </td>
-                </tr>
-            </tbody>
+    while ($row = mysqli_fetch_assoc($run)) {
+
+        $username = $row['username'];
+        $pfdd = $row['pfd'];
+         
+    $formatted_date = date("M j, Y", strtotime($pfdd));
+
+        echo "<tr>
+                <td></td>
+                <td>$username</td>
+                <td>$formatted_date</td>
+                <td>
+                    <span class='badge badge-success'>Active</span>
+                </td>
+                <td>
+                    <button class='btn btn-sm btn-primary'>View</button>
+                </td>
+              </tr>";
+    }
+
+} else {
+    echo "<tr>
+            <td colspan='5'>No patients found</td>
+          </tr>";
+}
+?>
+</tbody>
         </table>
     </div>
 </div>
