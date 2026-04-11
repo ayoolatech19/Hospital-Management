@@ -13,8 +13,8 @@ $sql = "SELECT * FROM registration WHERE id = '$user_id' AND roles = 'patient'";
 $run = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($run);
 
-$fullname = $row['fullname'];
-$reg_id = $row['reg_id'];
+$fullname = $row['fullname'] ?? 0;
+$reg_id = $row['reg_id']?? 0;
 $initials = "";
 foreach (explode(" ", $fullname) as $word) {
     if (!empty($word)) $initials .= strtoupper($word[0]);

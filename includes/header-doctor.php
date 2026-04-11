@@ -29,6 +29,8 @@ $count = "SELECT doctors, COUNT(*) AS pending_count
 
 $results = mysqli_query($conn, $count);
 $rows = mysqli_fetch_assoc($results);
+// $rows = mysqli_fetch_assoc($results);
+$pending_count = $rows['pending_count'] ?? 0; // defaults to 0 if null
 
 
 
@@ -79,7 +81,7 @@ $rows = mysqli_fetch_assoc($results);
                             <a href="appointments.php" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <span>Appointments</span>
-                                <span class="nav-badge warning"><?php echo $rows['pending_count']; ?></span>
+                                <span class="nav-badge warning"><?php echo $pending_count ?></span>
                             </a>
                         </li>
                     </ul>
