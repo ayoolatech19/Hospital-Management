@@ -1,6 +1,22 @@
 <?php 
 $page_title = "Doctor Dashboard";
 include '../includes/header-doctor.php'; 
+
+$page_title = "My Patients";
+include '../includes/header-doctor.php'; 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "hospital_management";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+ 
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+
+
 ?>
 <div class="grid grid-4 mb-4">
     <div class="stat-card">

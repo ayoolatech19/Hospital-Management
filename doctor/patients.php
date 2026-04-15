@@ -31,7 +31,6 @@ $run = mysqli_query($conn, $sql);
         <table class="table">
             <thead>
                 <tr>
-                    <th>Patient ID</th>
                     <th>Name</th>
                     <th>Last Visit</th>
                     <th>Status</th>
@@ -50,7 +49,6 @@ if (mysqli_num_rows($run) > 0) {
     $formatted_date = date("M j, Y", strtotime($pfdd));
 
         echo "<tr>
-                <td></td>
                 <td>$username</td>
                 <td>$formatted_date</td>
                 <td>
