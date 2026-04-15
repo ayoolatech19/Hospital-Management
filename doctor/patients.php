@@ -14,9 +14,10 @@ if (!$conn) {
 
 $docname=   $_SESSION['fullname'] ;
 
-$sql = "SELECT DISTINCT * 
+$sql = "SELECT username, pfd, status
         FROM appointment 
-        WHERE doctors = '$docname'";
+        WHERE doctors = '$docname'
+        GROUP BY username";
 
 $run = mysqli_query($conn, $sql);  
 

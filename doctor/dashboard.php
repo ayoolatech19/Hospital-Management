@@ -1,7 +1,4 @@
 <?php 
-$page_title = "Doctor Dashboard";
-include '../includes/header-doctor.php'; 
-
 $page_title = "My Patients";
 include '../includes/header-doctor.php'; 
 $servername = "localhost";
@@ -15,6 +12,40 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+$docname=   $_SESSION['fullname'] ;
+
+$count_app = "SELECT doctors, COUNT(*) AS pending_count 
+          FROM appointment 
+          WHERE status = 'pending' 
+          AND doctors = '$docname'
+          AND dates = CURDATE()
+          ";
+$results = mysqli_query($conn, $count_app);          
+$row = mysqli_fetch_assoc($results);
+$pending_count = $row['pending_count'] ?? 0;
+
+
+$count_query = "SELECT COUNT(DISTINCT username) AS totalpatient 
+                FROM appointment 
+                WHERE doctors = '$docname'";
+
+$results = mysqli_query($conn, $count_query);          
+$row = mysqli_fetch_assoc($results);
+$total_patients = $row['totalpatient'] ?? 0;
+
+
+$count_pres = "SELECT COUNT(id) AS totalprescription 
+                FROM patient_pres 
+                WHERE doctor_name = '$docname'";
+
+$results = mysqli_query($conn, $count_pres);          
+$row = mysqli_fetch_assoc($results);
+$total_prescription = $row['totalprescription'] ?? 0;
+
+
+
+
+
 
 
 ?>
@@ -24,7 +55,7 @@ if (!$conn) {
             <div class="stat-icon blue"><i class="fas fa-calendar-day"></i></div>
         </div>
         <div class="stat-body">
-            <h3>8</h3>
+            <h3><?php echo $pending_count?></h3>
             <p>Today's Appointments</p>
         </div>
     </div>
@@ -33,7 +64,7 @@ if (!$conn) {
             <div class="stat-icon green"><i class="fas fa-users"></i></div>
         </div>
         <div class="stat-body">
-            <h3>124</h3>
+            <h3><?php echo $total_patients?></h3>
             <p>Total Patients</p>
         </div>
     </div>
@@ -42,7 +73,7 @@ if (!$conn) {
             <div class="stat-icon orange"><i class="fas fa-prescription"></i></div>
         </div>
         <div class="stat-body">
-            <h3>45</h3>
+            <h3><?php echo $total_prescription?></h3>
             <p>Prescriptions Written</p>
         </div>
     </div>

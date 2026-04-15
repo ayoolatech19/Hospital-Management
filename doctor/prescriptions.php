@@ -29,9 +29,7 @@ $medname   = $_POST['medname'];
 $dosage    = $_POST['dosage'];
 $frequency = $_POST['frequency'];
 $duration  = $_POST['duration'];
-
-
-    
+$doctorname =  $_SESSION['fullname'];
 
 
     $sqli = "INSERT INTO patient_pres (patient_info,medname,dosage,frequency,duration,doctor_name)
