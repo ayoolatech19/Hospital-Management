@@ -19,14 +19,19 @@ $initials = "";
 foreach (explode(" ", $fullname) as $word) {
     if (!empty($word)) $initials .= strtoupper($word[0]);
 
-//  $sqlw = "SELECT COUNT(pending) AS totalpending 
-//         FROM appointment 
-//         WHERE user_id = '$userid'";
+//
+$docname = $_SESSION['fullname'] ;
 
-// $resultw = mysqli_query($conn, $sqlw);
-// $roww = mysqli_fetch_assoc($resultw);
+$count = "SELECT username, COUNT(*) AS pending_count 
+          FROM appointment 
+          WHERE status = 'pending' 
+          AND username = '$docname'
+          GROUP BY username";
 
-// $totalwithdraw = $roww['totalwithdraw'];
+$results = mysqli_query($conn, $count);
+$rows = mysqli_fetch_assoc($results);
+// $rows = mysqli_fetch_assoc($results);
+$pending_count = $rows['pending_count'] ?? 0; 
 
 
 
@@ -94,7 +99,7 @@ foreach (explode(" ", $fullname) as $word) {
                             <a href="appointments.php" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-check"></i>
                                 <span>Appointments</span>
-                                <span class="nav-badge warning">2</span>
+                                <span class="nav-badge warning"><?php echo $pending_count?></span>
                             </a>
                         </li>
                         <li class="nav-item">
